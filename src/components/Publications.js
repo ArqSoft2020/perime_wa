@@ -6,28 +6,37 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 function CharactersQuery() {
-  const { loading, error, data } = useQuery(gql`
+    const { loading, error, data } = useQuery(gql`
     {
-      characters {
-        results {
-          id
-          name
+        characters {
+            results {
+                id
+                name
+                image
+            }
         }
-      }
     }
-  `);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+    `);
 
-  return data.characters.results.map(({ id, name }) => (
-    <div key={id}>
-      <p>
-        {id}: {name}
-      </p>
-    </div>
-  ));
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+
+
+    return data.characters.results.map( (publication) => {
+    return(
+        <div key = {publication.id} className="col-12 col-md-12 mt-1">
+            <Card   >
+                <CardImg width="100%" src = {publication.image} alt={publication.name}/>
+                <CardImgOverlay>
+                    <CardTitle >{publication.name}</CardTitle>
+                </CardImgOverlay>
+            </Card>
+        </div>
+    );
+}) ;
 }
+
 
 
 class Publications extends Component {
@@ -78,6 +87,8 @@ class Publications extends Component {
                             <CardTitle >{publication.name}</CardTitle>
                         </CardImgOverlay>
                     </Card>
+
+                    
                 </div>
             );
         }) ;
@@ -86,7 +97,7 @@ class Publications extends Component {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-4 col-md-4">
-                        {publications}
+                        {/* {publications} */}
                         <CharactersQuery />
                     </div>
                 </div>
